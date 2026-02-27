@@ -1,0 +1,38 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+# Edited the file just to push
+name: Java CI with Gradle
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Install dos2unix
+      run: sudo apt install dos2unix
+    
+    - name: Fix gradlew & Build
+      run: |
+        chmod +x gradlew || true
+        dos2unix gradlew || true
+        
+        # Full clean build
+        rm -rf ~/.gradle/caches/ .gradle/
+        ./gradlew clean build --no-daemon
+        
+        echo "✅ Build successful!"
