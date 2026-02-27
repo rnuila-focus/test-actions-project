@@ -44,6 +44,7 @@ jobs:
         rm -rf ~/.gradle/caches/
         rm -rf ~/.gradle/init.d/
         rm -rf .gradle
+        rm -f gradle.properties
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
