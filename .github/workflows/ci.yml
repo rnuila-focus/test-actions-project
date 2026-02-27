@@ -39,6 +39,11 @@ jobs:
         sudo apt-get install dos2unix -yqq
         dos2unix gradlew
         chmod +x gradlew
+    - name: Clear Gradle caches
+      run: |
+        rm -rf ~/.gradle/caches/
+        rm -rf ~/.gradle/init.d/
+        rm -rf .gradle
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
