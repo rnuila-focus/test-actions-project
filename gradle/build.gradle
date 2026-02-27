@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11  // Changed from 17
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'net.logstash.logback:logstash-logback-encoder:5.2'
+    testImplementation 'junit:junit:4.12'
+}
