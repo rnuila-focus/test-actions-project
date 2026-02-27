@@ -33,10 +33,25 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-    - name: Grant permissions for gradlew and fix line endings
+    - name: Install dos2unix
+      run: sudo apt-get update -yqq && sudo apt-get install dos2unix -yqq
+    
+    - name: Verify/Create gradlew
       run: |
-        sudo apt-get update -yqq
-        sudo apt-get install dos2unix -yqq
+        # Check if gradlew exists
+        if [ ! -f gradlew ]; then
+          echo "gradlew missing - downloading Gradle 6.9.4 wrapper"
+          curl -L https://github.com/gradle/gradle/raw/v6.9.4/gradlew -o gradlew
+          curl -L https://github.com/gradle/gradle/raw/v6.9.4/gradlew.bat -o gradlew.bat
+          curl -L https://github.com/gradle/gradle/raw/v6.9.4/gradle/wrapper/gradle-wrapper.jar -o gradle/wrapper/gradle-wrapper.jar
+          cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          distributionBase=GRADLE_USER_HOME
+          distributionPath=wrapper/dists
+          distributionUrl=https\://services.gradle.org/distributions/gradle-6.9.4-bin.zip
+          zipStoreBase=GRADLE_USER_HOME
+          zipStorePath=wrapper/dists
+          EOF
+        fi
         dos2unix gradlew
         chmod +x gradlew
     - name: Clear Gradle caches
